@@ -38,17 +38,17 @@ Wake.prototype.save = function save(callback) {
 
 Wake.prototype.get = function get(username, callback) {
   mongodb.open(function(err, db) {
-    if (err) {
+    if(err) {
       return callback(err);
     }
     db.collection('users', function(err, collection) {
-      if (err) {
+      if(err) {
         mongodb.close();
         return callback(err);
       }
       collection.findOne({name: username}, function(err, doc) {
         mongodb.close();
-        if (doc) {
+        if(doc) {
           callback(err, doc);
         } else {
           callback(err, null);

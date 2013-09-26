@@ -20,9 +20,9 @@ RateOP.prototype.op = function op(username, callback) {
           var user = require('./wake.js');
           var nuser = new user();
           nuser.updaterate(username, nrate, function(err) {
+            callback(ndoc.rate);
           });
         });
-        callback(ndoc.rate);
       }
       else {
         ret = 1;
@@ -30,11 +30,11 @@ RateOP.prototype.op = function op(username, callback) {
           var user = require('./wake.js');
           var nuser = new user();
           nuser.updaterate(username, 1, function(err) {
+            currentrate.erase(function(err) {
+              callback(1);
+            });
           });
         });
-        currentrate.erase(function(err) {
-        });
-        callback(1);
       }
     }
     else {
@@ -43,12 +43,11 @@ RateOP.prototype.op = function op(username, callback) {
         var user = require('./wake.js');
         var nuser = new user();
         nuser.updaterate(username, 1, function(err) {
+          currentrate.save(function(err) {
+            callback(1);
+          });
         });
       });
-      currentrate.save(function(err) {
-      });
-      callback(1);
     }
   });
-  return 0;
 }

@@ -9,8 +9,9 @@ Rate.prototype.save = function save(callback) {
   var now = new Date();
   var rate = {
     trick: 'trick',
-    date: now.getMonth().toString + '-' + now.getDate().toString,
-    rate: 0
+    month: now.getMonth(),
+    day: now.getDate(),
+    rate: 1
   }
   mongodb.open(function(err, db) {
     if(err) {
@@ -44,8 +45,7 @@ Rate.prototype.get = function get(callback) {
       collection.findOne({trick: 'trick'}, function(err, doc) {
         mongodb.close();
         if (doc) {
-          var nrate = new Rate(doc);
-          callback(err, nrate);
+          callback(err, doc);
         } else {
           callback(err, null);
         }
@@ -69,7 +69,8 @@ Rate.prototype.erase = function update(callback) {
         trick: 'trick'
       }, {
         $set: {
-          date: now.getMonth().toString + '-' + now.getDate().toString,
+          month: now.getMonth(),
+          day: now.getDate(),
           rate: 1
         }
       }, function (err, result) {

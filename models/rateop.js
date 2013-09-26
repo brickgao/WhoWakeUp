@@ -5,24 +5,50 @@ function RateOP() {
 
 module.exports = RateOP;
 
-RateOP.prototype.op = function op(callback) {
+RateOP.prototype.op = function op(username, callback) {
   var now = new Date();
-  var date_s = now.getMonth().toString + '-' + now.getDate().toString;
   var currentrate = new Rate();
   currentrate.get(function(err, ndoc) {
     if(ndoc) {
-      if(ndoc.trick.date === date_s) {
-        callback(user.trick.rate);
-        var nrate = user.trick.rate + 1;
-        return currentrate.update(nrate, function(err) {
-        });
+      var check = {
+        day: now.getDate(),
+        month: now.getMonth()
       }
-      return currentrate.erase(function(err) {
-          callback(1);
-      });
-    }
-    return currentrate.save(function(err) {
+      if(ndoc.day === check.day && ndoc.month === check.month) {
+        var nrate = ndoc.rate + 1;
+        currentrate.update(nrate, function(err) {
+          var user = require('./wake.js');
+          var nuser = new user();
+          nuser.updaterate(username, nrate, function(err) {
+          });
+        });
+        callback(ndoc.rate);
+      }
+      else {
+        ret = 1;
+        currentrate.update(nrate, function(err) {
+          var user = require('./wake.js');
+          var nuser = new user();
+          nuser.updaterate(username, 1, function(err) {
+          });
+        });
+        currentrate.erase(function(err) {
+        });
         callback(1);
-    });
+      }
+    }
+    else {
+      ret = 1;
+      currentrate.update(nrate, function(err) {
+        var user = require('./wake.js');
+        var nuser = new user();
+        nuser.updaterate(username, 1, function(err) {
+        });
+      });
+      currentrate.save(function(err) {
+      });
+      callback(1);
+    }
   });
+  return 0;
 }

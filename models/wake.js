@@ -8,12 +8,14 @@ module.exports = Wake;
 
 Wake.prototype.save = function save(callback) {
   var now = new Date();
+  var currentname = this.name;
   var user = {
-    name: this.name,
+    name: currentname,
     month: now.getMonth(),
     day: now.getDate(),
     hour: now.getHours(),
-    minutes: now.getMinutes()
+    minutes: now.getMinutes(),
+    rate: -1
   }
   mongodb.open(function(err, db) {
     if(err) {
@@ -47,8 +49,7 @@ Wake.prototype.get = function get(username, callback) {
       collection.findOne({name: username}, function(err, doc) {
         mongodb.close();
         if (doc) {
-          var user = new Wake(doc);
-          callback(err, user);
+          callback(err, doc);
         } else {
           callback(err, null);
         }
@@ -75,7 +76,36 @@ Wake.prototype.update = function update(username, callback) {
           month: now.getMonth(),
           day: now.getDate(),
           hour: now.getHours(),
-          minutes: now.getMinutes()
+          minutes: now.getMinutes(),
+          rate: -1
+        }
+      }, function (err, result) {
+        mongodb.close();
+        if (err) {
+          return callback(err);
+        }
+        callback(null);
+      });
+    });
+  });
+}
+
+Wake.prototype.updaterate = function updaterate(username, nrate, callback) {
+  var now = new Date();
+  mongodb.open(function(err, db) {
+    if(err) {
+      return callback(err);
+    }
+    db.collection('users', function(err, collection) {
+      if(err) {
+        mongodb.close();
+        return callback(err);
+      }
+      collection.update({
+        name: username
+      }, {
+        $set: {
+          rate: nrate
         }
       }, function (err, result) {
         mongodb.close();

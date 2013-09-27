@@ -1,43 +1,43 @@
 var mongodb = require('./db');
 
-function Rate() {
+function Rank() {
 }
 
-module.exports = Rate;
+module.exports = Rank;
 
-Rate.prototype.save = function save(callback) {
+Rank.prototype.save = function save(callback) {
   var now = new Date();
-  var rate = {
+  var rank = {
     trick: 'trick',
     month: now.getMonth(),
     day: now.getDate(),
-    rate: 1
+    rank: 1
   }
   mongodb.open(function(err, db) {
     if(err) {
       return callback(err);
     }
-    db.collection('rate', function(err, collection) {
+    db.collection('rank', function(err, collection) {
       if(err) {
         mongodb.close();
         return callback(err);
       }
       collection.ensureIndex('trick', {unqiue: true});
-      collection.insert(rate, {safe: true}, function(err, rate) {
+      collection.insert(rank, {safe: true}, function(err, rank) {
         mongodb.close();
-        callback(err, rate);
+        callback(err, rank);
       });
     });
   });
 }
 
 
-Rate.prototype.get = function get(callback) {
+Rank.prototype.get = function get(callback) {
   mongodb.open(function(err, db) {
     if (err) {
       return callback(err);
     }
-    db.collection('rate', function(err, collection) {
+    db.collection('rank', function(err, collection) {
       if (err) {
         mongodb.close();
         return callback(err);
@@ -54,13 +54,13 @@ Rate.prototype.get = function get(callback) {
   });
 }
 
-Rate.prototype.erase = function update(callback) {
+Rank.prototype.erase = function update(callback) {
   var now = new Date();
   mongodb.open(function(err, db) {
     if(err) {
       return callback(err);
     }
-    db.collection('rate', function(err, collection) {
+    db.collection('rank', function(err, collection) {
       if(err) {
         mongodb.close();
         return callback(err);
@@ -71,7 +71,7 @@ Rate.prototype.erase = function update(callback) {
         $set: {
           month: now.getMonth(),
           day: now.getDate(),
-          rate: 1
+          rank: 1
         }
       }, function (err, result) {
         mongodb.close();
@@ -84,13 +84,13 @@ Rate.prototype.erase = function update(callback) {
   });
 }
 
-Rate.prototype.update = function update(nrate, callback) {
+Rank.prototype.update = function update(nrank, callback) {
   var now = new Date();
   mongodb.open(function(err, db) {
     if(err) {
       return callback(err);
     }
-    db.collection('rate', function(err, collection) {
+    db.collection('rank', function(err, collection) {
       if(err) {
         mongodb.close();
         return callback(err);
@@ -99,7 +99,7 @@ Rate.prototype.update = function update(nrate, callback) {
         trick: 'trick'
       }, {
         $set: {
-          rate: nrate
+          rank: nrank
         }
       }, function (err, result) {
         mongodb.close();

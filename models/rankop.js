@@ -1,36 +1,36 @@
-var Rate = require('./rate.js')
+var Rank = require('./rank.js')
 
-function RateOP() {
+function RankOP() {
 }
 
-module.exports = RateOP;
+module.exports = RankOP;
 
-RateOP.prototype.op = function op(username, callback) {
+RankOP.prototype.op = function op(username, callback) {
   var now = new Date();
-  var currentrate = new Rate();
-  currentrate.get(function(err, ndoc) {
+  var currentrank = new Rank();
+  currentrank.get(function(err, ndoc) {
     if(ndoc) {
       var check = {
         day: now.getDate(),
         month: now.getMonth()
       }
       if(ndoc.day === check.day && ndoc.month === check.month) {
-        var nrate = ndoc.rate + 1;
-        currentrate.update(nrate, function(err) {
+        var nrank = ndoc.rank + 1;
+        currentrank.update(nrank, function(err) {
           var user = require('./wake.js');
           var nuser = new user();
-          nuser.updaterate(username, nrate, function(err) {
-            callback(ndoc.rate);
+          nuser.updaterank(username, nrank, function(err) {
+            callback(ndoc.rank);
           });
         });
       }
       else {
         ret = 1;
-        currentrate.update(nrate, function(err) {
+        currentrank.update(nrank, function(err) {
           var user = require('./wake.js');
           var nuser = new user();
-          nuser.updaterate(username, 1, function(err) {
-            currentrate.erase(function(err) {
+          nuser.updaterank(username, 1, function(err) {
+            currentrank.erase(function(err) {
               callback(1);
             });
           });
@@ -39,11 +39,11 @@ RateOP.prototype.op = function op(username, callback) {
     }
     else {
       ret = 1;
-      currentrate.update(nrate, function(err) {
+      currentrank.update(nrank, function(err) {
         var user = require('./wake.js');
         var nuser = new user();
-        nuser.updaterate(username, 1, function(err) {
-          currentrate.save(function(err) {
+        nuser.updaterank(username, 1, function(err) {
+          currentrank.save(function(err) {
             callback(1);
           });
         });

@@ -15,7 +15,7 @@ Wake.prototype.save = function save(callback) {
     day: now.getDate(),
     hour: now.getHours(),
     minutes: now.getMinutes(),
-    rate: -1
+    rank: -1
   }
   mongodb.open(function(err, db) {
     if(err) {
@@ -77,7 +77,7 @@ Wake.prototype.update = function update(username, callback) {
           day: now.getDate(),
           hour: now.getHours(),
           minutes: now.getMinutes(),
-          rate: -1
+          rank: -1
         }
       }, function (err, result) {
         mongodb.close();
@@ -90,7 +90,7 @@ Wake.prototype.update = function update(username, callback) {
   });
 }
 
-Wake.prototype.updaterate = function updaterate(username, nrate, callback) {
+Wake.prototype.updaterank = function updaterank(username, nrank, callback) {
   var now = new Date();
   mongodb.open(function(err, db) {
     if(err) {
@@ -105,7 +105,7 @@ Wake.prototype.updaterate = function updaterate(username, nrate, callback) {
         name: username
       }, {
         $set: {
-          rate: nrate
+          rank: nrank
         }
       }, function (err, result) {
         mongodb.close();

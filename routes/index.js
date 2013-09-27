@@ -45,7 +45,7 @@ module.exports = function(app) {
                 var mysearch = new Search();
                 mysearch.get(currentuser.name, function(err, doc) {
                   var s = '';
-                  s = '亲爱的' + doc.name.toString() + '，\n你的起床时间为：' + doc.hour.toString() + ':' + doc.minutes.toString() + '\n是今天第' + doc.rank.toString() + '个起床的哟!\n成功击败了学校里' + (doc.num - 1).toString() + '个还赖在床上的懒虫！\n\n/太阳朝阳唤起我们斗志，\n/奋斗梦想叫醒我们起床！\n\n这是一份属于你的独一无二的起床回执，赶快告诉身边的cupers吧！！~~~~\n\n---------------\n【MrCUP推出早起签到功能，每天早6点至9点，回复数字\"0\"按照提示参与早起签到，快和你的小伙伴们一起看看你的起床排名有木有高端大气上档次！专属石大学子，你加了吗？】';
+                  s = '亲爱的' + doc.name.toString() + '，\n你的起床时间为：' + doc.hour.toString() + ':' + doc.minutes.toString() + '\n是今天第' + doc.rank.toString() + '个起床的哟!\n成功击败了学校里' + (12460 - 1).toString() + '个还赖在床上的懒虫！\n\n/太阳朝阳唤起我们斗志，\n/奋斗梦想叫醒我们起床！\n\n这是一份属于你的独一无二的起床回执，赶快告诉身边的cupers吧！！~~~~\n\n---------------\n【MrCUP推出早起签到功能，每天早6点至9点，回复数字\"0\"按照提示参与早起签到，快和你的小伙伴们一起看看你的起床排名有木有高端大气上档次！专属石大学子，你加了吗？】';
                   return res.send(s);
                 });
               });

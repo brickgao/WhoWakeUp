@@ -36,9 +36,25 @@ module.exports = function(app) {
           if(is === true) {
             var mysearch = new Search();
             mysearch.get(currentuser.name, function(err, doc) {
+              var nh = Now.getHours();
+              var nm = Now.getMinutes();
+              var nsh = '';
+              var nsm = '';
               var s = '';
               var sh = '';
               var sm = '';
+              if(nh < 10) {
+                snh = '0' + nh.toString();
+              }
+              else {
+                snh = nh.toString();
+              }
+              if(nm < 10) {
+                snm = '0' + nm.toString();
+              }
+              else {
+                snm = nm.toString();
+              }
               if(doc.hour < 10) {
                 sh = '0' + doc.hour.toString();
               }
@@ -51,12 +67,12 @@ module.exports = function(app) {
               else {
                 sm = doc.minutes.toString();
               }
-              s = '你已经在' + sh + ':' + sm + '分起床了，你是在调戏我吗？';
+              s = '现在是' + snh + ':' + snm + '，你已经在' + sh + ':' + sm + '分起床了，你是在调戏我吗？';
               return res.send(s);
             });
           }
-          if(is === false) {
-            currentuser.update(currentuser.name, function(err) {
+          else {
+            return currentuser.update(currentuser.name, function(err) {
               if(err)
                 return res.redirect('/');
               var op = new Rankop();
@@ -86,7 +102,8 @@ module.exports = function(app) {
           }
         });
       }
-      return currentuser.save(function(err) {
+      else {
+          return currentuser.save(function(err) {
           if(err)
             return res.redirect('/');
           var op = new Rankop();
@@ -112,7 +129,8 @@ module.exports = function(app) {
               return res.send(s);
             });
           });
-      });
+        });
+      }
     });
   });
 

@@ -16,7 +16,7 @@ RankOP.prototype.op = function op(username, callback) {
       }
       if(ndoc.day === check.day && ndoc.month === check.month) {
         var nrank = ndoc.rank + 1;
-        currentrank.update(nrank, function(err) {
+        return currentrank.update(nrank, function(err) {
           var user = require('./wake.js');
           var nuser = new user();
           nuser.updaterank(username, nrank, function(err) {
@@ -26,7 +26,7 @@ RankOP.prototype.op = function op(username, callback) {
       }
       else {
         ret = 1;
-        currentrank.update(nrank, function(err) {
+        return currentrank.update(nrank, function(err) {
           var user = require('./wake.js');
           var nuser = new user();
           nuser.updaterank(username, 1, function(err) {
@@ -39,7 +39,7 @@ RankOP.prototype.op = function op(username, callback) {
     }
     else {
       ret = 1;
-      currentrank.update(nrank, function(err) {
+      return currentrank.update(nrank, function(err) {
         var user = require('./wake.js');
         var nuser = new user();
         nuser.updaterank(username, 1, function(err) {

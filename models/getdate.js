@@ -13,5 +13,6 @@ getdate.prototype.get = function get(day, month, callback) {
   }
   if(day === now.getDate() && month === now.getMonth())
     return callback(true);
-  return callback(false);
+  else
+    return callback(false);
 }

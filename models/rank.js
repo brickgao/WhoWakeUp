@@ -54,7 +54,7 @@ Rank.prototype.get = function get(callback) {
   });
 }
 
-Rank.prototype.erase = function update(callback) {
+Rank.prototype.erase = function erase(callback) {
   var now = new Date();
   pool.acquire(function(err, db) {
     if(err) {
@@ -84,7 +84,7 @@ Rank.prototype.erase = function update(callback) {
   });
 }
 
-Rank.prototype.update = function update(nrank, callback) {
+Rank.prototype.update = function update(callback) {
   var now = new Date();
   pool.acquire(function(err, db) {
     if(err) {
@@ -98,15 +98,22 @@ Rank.prototype.update = function update(nrank, callback) {
       collection.update({
         trick: 'trick'
       }, {
-        $set: {
-          rank: nrank
+        $inc: {
+          rank: 1
         }
-      }, function (err, result) {
-        pool.release(db);
+      }, function (err) {
         if (err) {
+          pool.release(db);
           return callback(err);
         }
-        callback(null);
+        collection.findOne({trick: 'trick'}, function(err, doc) {
+          pool.release(db);
+          if (doc) {
+            callback(err, doc.rank);
+          } else {
+            callback(err, null);
+          }
+        });
       });
     });
   });

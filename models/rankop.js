@@ -15,18 +15,17 @@ RankOP.prototype.op = function op(username, callback) {
         month: now.getMonth()
       }
       if(ndoc.day === check.day && ndoc.month === check.month) {
-        var nrank = ndoc.rank + 1;
-        return currentrank.update(nrank, function(err) {
+        return currentrank.update(function(err, nrank) {
           var user = require('./wake.js');
           var nuser = new user();
           nuser.updaterank(username, nrank, function(err) {
-            callback(ndoc.rank);
+            callback(nrank);
           });
         });
       }
       else {
         ret = 1;
-        return currentrank.update(nrank, function(err) {
+        return currentrank.erase(function(err) {
           var user = require('./wake.js');
           var nuser = new user();
           nuser.updaterank(username, 1, function(err) {
@@ -39,7 +38,7 @@ RankOP.prototype.op = function op(username, callback) {
     }
     else {
       ret = 1;
-      return currentrank.update(nrank, function(err) {
+      return currentrank.save(function(err) {
         var user = require('./wake.js');
         var nuser = new user();
         nuser.updaterank(username, 1, function(err) {

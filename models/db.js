@@ -17,7 +17,7 @@ var pool = poolModule.Pool({
         });
     },
     destroy  : function(db) { db.close();},
-    max      : 50 ,
+    max      : 1,
     idleTimeoutMillis : 30000,
     log : false 
 });

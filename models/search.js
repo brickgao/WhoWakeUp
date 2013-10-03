@@ -1,4 +1,4 @@
-var mongodb = require('./db');
+var pool = require('./db');
 
 function Search(username) {
 }
@@ -6,13 +6,13 @@ function Search(username) {
 module.exports = Search;
 
 Search.prototype.get = function get(username, callback) {
-  mongodb.open(function(err, db) {
+  pool.acquire(function(err, db) {
     if(err) {
       return callback(err);
     }
     db.collection('users', function(err, collection) {
       if(err) {
-        mongodb.close();
+        pool.release(db);
         return callback(err);
       }
       var cnt = -1;
@@ -20,7 +20,7 @@ Search.prototype.get = function get(username, callback) {
         cnt = count;
       });
       collection.findOne({name: username}, function(err, doc) {
-        mongodb.close();
+        pool.release(db);
         if(doc) {
           collection.count(function(err, count) {
             doc.num = cnt;

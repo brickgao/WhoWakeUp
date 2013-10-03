@@ -1,4 +1,4 @@
-var mongodb = require('./db');
+var pool = require('./db');
 
 function Wake(username) {
   this.name = username;
@@ -17,18 +17,18 @@ Wake.prototype.save = function save(callback) {
     minutes: now.getMinutes(),
     rank: -1
   }
-  mongodb.open(function(err, db) {
+  pool.acquire(function(err, db) {
     if(err) {
       return callback(err);
     }
     db.collection('users', function(err, collection) {
       if(err) {
-        mongodb.close();
+        pool.release(db);
         return callback(err);
       }
       collection.ensureIndex('name', {unqiue: true});
       collection.insert(user, {safe: true}, function(err, user) {
-        mongodb.close();
+        pool.release(db);
         callback(err, user);
       });
     });
@@ -37,17 +37,17 @@ Wake.prototype.save = function save(callback) {
 
 
 Wake.prototype.get = function get(username, callback) {
-  mongodb.open(function(err, db) {
+  pool.acquire(function(err, db) {
     if(err) {
       return callback(err);
     }
     db.collection('users', function(err, collection) {
       if(err) {
-        mongodb.close();
+        pool.release(db);
         return callback(err);
       }
       collection.findOne({name: username}, function(err, doc) {
-        mongodb.close();
+        pool.release(db);
         if(doc) {
           callback(err, doc);
         } else {
@@ -60,13 +60,13 @@ Wake.prototype.get = function get(username, callback) {
 
 Wake.prototype.update = function update(username, callback) {
   var now = new Date();
-  mongodb.open(function(err, db) {
+  pool.acquire(function(err, db) {
     if(err) {
       return callback(err);
     }
     db.collection('users', function(err, collection) {
       if(err) {
-        mongodb.close();
+        pool.release(db);
         return callback(err);
       }
       collection.update({
@@ -80,7 +80,7 @@ Wake.prototype.update = function update(username, callback) {
           rank: -1
         }
       }, function (err, result) {
-        mongodb.close();
+        pool.release(db);
         if (err) {
           return callback(err);
         }
@@ -92,13 +92,13 @@ Wake.prototype.update = function update(username, callback) {
 
 Wake.prototype.updaterank = function updaterank(username, nrank, callback) {
   var now = new Date();
-  mongodb.open(function(err, db) {
+  pool.acquire(function(err, db) {
     if(err) {
       return callback(err);
     }
     db.collection('users', function(err, collection) {
       if(err) {
-        mongodb.close();
+        pool.release(db);
         return callback(err);
       }
       collection.update({
@@ -108,7 +108,7 @@ Wake.prototype.updaterank = function updaterank(username, nrank, callback) {
           rank: nrank
         }
       }, function (err, result) {
-        mongodb.close();
+        pool.release(db);
         if (err) {
           return callback(err);
         }

@@ -74,7 +74,7 @@ module.exports = function(app) {
           else {
             return currentuser.update(currentuser.name, function(err) {
               if(err)
-                return res.redirect('/');
+                return console.log(err);
               var op = new Rankop();
               op.op(currentuser.name, function(nrank) {
                 var mysearch = new Search();
@@ -105,7 +105,7 @@ module.exports = function(app) {
       else {
           return currentuser.save(function(err) {
           if(err)
-            return res.redirect('/');
+            return console.log(err);
           var op = new Rankop();
           op.op(currentuser.name, function(nrank) {
             var mysearch = new Search();

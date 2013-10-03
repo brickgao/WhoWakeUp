@@ -1,4 +1,4 @@
-var mongodb = require('./db');
+var pool = require('./db');
 
 function Rank() {
 }
@@ -13,18 +13,18 @@ Rank.prototype.save = function save(callback) {
     day: now.getDate(),
     rank: 1
   }
-  mongodb.open(function(err, db) {
+  pool.acquire(function(err, db) {
     if(err) {
       return callback(err);
     }
     db.collection('rank', function(err, collection) {
       if(err) {
-        mongodb.close();
+        pool.release(db);
         return callback(err);
       }
       collection.ensureIndex('trick', {unqiue: true});
       collection.insert(rank, {safe: true}, function(err, rank) {
-        mongodb.close();
+        pool.release(db);
         callback(err, rank);
       });
     });
@@ -33,17 +33,17 @@ Rank.prototype.save = function save(callback) {
 
 
 Rank.prototype.get = function get(callback) {
-  mongodb.open(function(err, db) {
+  pool.acquire(function(err, db) {
     if (err) {
       return callback(err);
     }
     db.collection('rank', function(err, collection) {
       if (err) {
-        mongodb.close();
+        pool.release(db);
         return callback(err);
       }
       collection.findOne({trick: 'trick'}, function(err, doc) {
-        mongodb.close();
+        pool.release(db);
         if (doc) {
           callback(err, doc);
         } else {
@@ -56,13 +56,13 @@ Rank.prototype.get = function get(callback) {
 
 Rank.prototype.erase = function update(callback) {
   var now = new Date();
-  mongodb.open(function(err, db) {
+  pool.acquire(function(err, db) {
     if(err) {
       return callback(err);
     }
     db.collection('rank', function(err, collection) {
       if(err) {
-        mongodb.close();
+        pool.release(db);
         return callback(err);
       }
       collection.update({
@@ -74,7 +74,7 @@ Rank.prototype.erase = function update(callback) {
           rank: 1
         }
       }, function (err, result) {
-        mongodb.close();
+        pool.release(db);
         if (err) {
           return callback(err);
         }
@@ -86,13 +86,13 @@ Rank.prototype.erase = function update(callback) {
 
 Rank.prototype.update = function update(nrank, callback) {
   var now = new Date();
-  mongodb.open(function(err, db) {
+  pool.acquire(function(err, db) {
     if(err) {
       return callback(err);
     }
     db.collection('rank', function(err, collection) {
       if(err) {
-        mongodb.close();
+        pool.release(db);
         return callback(err);
       }
       collection.update({
@@ -102,7 +102,7 @@ Rank.prototype.update = function update(nrank, callback) {
           rank: nrank
         }
       }, function (err, result) {
-        mongodb.close();
+        pool.release(db);
         if (err) {
           return callback(err);
         }

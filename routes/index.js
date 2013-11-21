@@ -82,6 +82,8 @@ module.exports = function(app) {
                   var s = '';
                   var sh = '';
                   var sm = '';
+                  var day = Now.getDate();
+                  var month = Now.getMonth() + 1;
                   if(doc.hour < 10) {
                     sh = '0' + doc.hour.toString();
                   }
@@ -94,7 +96,7 @@ module.exports = function(app) {
                   else {
                     sm = doc.minutes.toString();
                   }
-                  s = '亲爱的cuper，\n你的起床时间为：' + sh + ':' + sm + '\n是今天第' + doc.rank.toString() + '个起床的哟!\n成功击败了学校里' + (12460 - doc.rank).toString() + '个还赖在床上的懒虫！\n\n/太阳朝阳唤起我们斗志，\n/奋斗梦想叫醒我们起床！\n\n这是一份属于你的独一无二的起床回执，赶快告诉身边的cupers吧！！~~~~\n\n---------------\n【MrCUP正在对签到功能进行升级，现阶段全天开放，无需绑定，直接回复数字0即可测试签到功能。MrCUP欢迎大家给出更多建议与意见！】';
+                  s = '亲爱的cuper，\n今天是' + month + '月' + day + '日，' + '\n你的起床时间为：' + sh + ':' + sm + '\n是今天第' + doc.rank.toString() + '个起床的哟!\n成功击败了学校里' + (12460 - doc.rank).toString() + '个还赖在床上的懒虫！\n\n/太阳朝阳唤起我们斗志，\n/奋斗梦想叫醒我们起床！\n\n这是一份属于你的独一无二的起床回执，赶快告诉身边的cupers吧！！~~~~\n\n---------------\n【MrCUP正在对签到功能进行升级，现阶段全天开放，无需绑定，直接回复数字0即可测试签到功能。MrCUP欢迎大家给出更多建议与意见！】';
                   return res.send(s);
                 });
               });
@@ -113,6 +115,8 @@ module.exports = function(app) {
               var s = '';
               var sh = '';
               var sm = '';
+              var day = Now.getDate();
+              var month = Now.getMonth() + 1;
               if(doc.hour < 10) {
                 sh = '0' + doc.hour.toString();
               }
@@ -125,7 +129,7 @@ module.exports = function(app) {
               else {
                 sm = doc.minutes.toString();
               }
-              s = '亲爱的cuper，\n你的起床时间为：' + sh + ':' + sm + '\n是今天第' + doc.rank.toString() + '个起床的哟!\n成功击败了学校里' + (12460 - doc.rank).toString() + '个还赖在床上的懒虫！\n\n/太阳朝阳唤起我们斗志，\n/奋斗梦想叫醒我们起床！\n\n这是一份属于你的独一无二的起床回执，赶快告诉身边的cupers吧！！~~~~\n\n---------------\n【MrCUP正在对签到功能进行升级，现阶段全天开放，无需绑定，直接回复数字0即可测试签到功能。MrCUP欢迎大家给出更多建议与意见！】';
+              s = '亲爱的cuper，\n今天是' + month + '月' + day + '日，' + '\n是今天第' + doc.rank.toString() + '个起床的哟!\n成功击败了学校里' + (12460 - doc.rank).toString() + '个还赖在床上的懒虫！\n\n/太阳朝阳唤起我们斗志，\n/奋斗梦想叫醒我们起床！\n\n这是一份属于你的独一无二的起床回执，赶快告诉身边的cupers吧！！~~~~\n\n---------------\n【MrCUP正在对签到功能进行升级，现阶段全天开放，无需绑定，直接回复数字0即可测试签到功能。MrCUP欢迎大家给出更多建议与意见！】';
               return res.send(s);
             });
           });

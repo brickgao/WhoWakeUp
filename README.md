@@ -1,6 +1,8 @@
 WhoWakeUp [![Build Status](https://travis-ci.org/brickgao/WhoWakeUp.png?branch=master)](https://travis-ci.org/brickgao/WhoWakeUp)
 =========
 
+Notice：该项目已经停止维护，正被重写并整合在[RankIt](https://github.com/brickgao/RankIt)。
+
 WhoWakeUp是一个查看你的起床排名的网页应用，配套给微信平台使用。
 
 Get Started
